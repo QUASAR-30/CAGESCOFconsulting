@@ -17,7 +17,7 @@
 
   <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
     crossorigin="anonymous"></script>
-  <title>Facture</title>
+  <title>CAGESCOF Consulting</title>
 </head>
 
 <body>
@@ -28,7 +28,7 @@
   <!-- header  -->
   <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="/">INVOICE SYSTEM</a>
+      <a class="navbar-brand" href="/"> <STrong>CAGESCOF Consulting</STrong> / ADMIN SYSTEM</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -62,9 +62,13 @@
             </a>
             <div class="dropdown-menu">
               <a class="dropdown-item" href="{% url 'add-customer' %}">Add customer</a>
+              <a class="dropdown-item" href="{% url 'add-document' %}">add document</a>
               <a class="dropdown-item" href="#">add admin</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">statistic</a>
+
+              <a href="{% url 'indexclient' %}" class="btn">client </a>
+
+
             </div>
           </li>
 
@@ -105,8 +109,8 @@
     <!-- copyright -->
 
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-      invoice system © 2023 copyright:
-      <a href="https://donaldprogrammeur.com"> Donald Programmer</a>
+       system © 2024 copyright: 
+      <a href="https://cagescof-consulting.cm"> CAGESCOF Consulting</a>
     </div>
 
     <!-- endcopyright -->

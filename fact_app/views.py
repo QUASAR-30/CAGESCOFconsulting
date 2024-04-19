@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from .models import * 
 from django.contrib import messages
-
+from django.db import transaction
 from django.http import HttpResponse
 
 import pdfkit
@@ -23,7 +23,6 @@ from .decorators import *
 
 from django.utils.translation import gettext as _
 
-
 # Create your views here.
 
 class HomeView(LoginRequiredSuperuserMixim, View):
@@ -42,6 +41,7 @@ class HomeView(LoginRequiredSuperuserMixim, View):
         items = pagination(request, self.invoices)
 
         self.context['invoices'] = items
+
 
         return render(request, self.templates_name, self.context)
 
@@ -117,6 +117,7 @@ class AddCustomerView(LoginRequiredSuperuserMixim, View):
             'zip_code': request.POST.get('zip'),
             'save_by': request.user
 
+
         }
 
         try:
@@ -139,6 +140,7 @@ class AddCustomerView(LoginRequiredSuperuserMixim, View):
 
 
 class AddInvoiceView(LoginRequiredSuperuserMixim, View):
+
     """ add a new invoice view """
 
     template_name = 'add_invoice.html'
@@ -223,6 +225,117 @@ class InvoiceVisualizationView(LoginRequiredSuperuserMixim, View):
 
         return render(request, self.template_name, context)
 
+
+class AddDocumentView(LoginRequiredSuperuserMixim, View):
+    """ Add a new document view """
+
+    template_name = 'add_document.html'
+
+    def get(self, request, *args, **kwargs):
+        customers = Customer.objects.select_related('save_by').all()
+        context = {
+            'customers': customers
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+
+        data = {
+            'customer': request.POST.get('customer'),
+            'save_by': request.POST.get('save_by'),
+            'document_type': request.POST.get('document_type'),
+            'file': request.POST.get('file'),
+            'comments': request.POST.get('comments'),
+
+        }
+
+    @transaction.atomic()
+    def post(self, request, *args, **kwargs):
+        try:
+            customer_id = request.POST.get('customer')
+            document_type = request.POST.get('document_type')
+            file = request.FILES.get('file')
+            comment = request.POST.get('comment')
+
+            customer = Customer.objects.get(id=customer_id)
+
+            document = Document.objects.create(
+                customer=customer,
+                save_by=request.user,
+                document_type=document_type,
+                file=file,
+                comments=comment
+            )
+
+            if document:
+                messages.success(request, "Document saved successfully.")
+            else:
+                messages.error(request, "Sorry, please try again. Failed to save the document.")
+
+        except Exception as e:
+            messages.error(request, f"An error occurred: {e}")
+
+        return render(request, self.template_name)
+
+
+class HomeViewDoc(LoginRequiredSuperuserMixim, View):
+    """ Main view """
+
+    template_name = 'indexdoc.html'
+
+    def get(self, request, *args, **kwargs):
+        invoices = Invoice.objects.select_related('customer', 'save_by').all().order_by('-invoice_date_time')
+        items = pagination(request, invoices)
+
+        context = {
+            'invoices': items
+        }
+
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        # Modifier une facture
+        if 'id_modified' in request.POST:
+            invoice_id = request.POST.get('id_modified')
+            paid = request.POST.get('modified')
+
+            try:
+                obj = Invoice.objects.get(id=invoice_id)
+                obj.paid = (paid == 'True')
+                obj.save()
+                messages.success(request, _("Change made successfully."))
+            except Invoice.DoesNotExist:
+                messages.error(request, _("Invoice not found."))
+            except Exception as e:
+                messages.error(request, f"An error occurred: {e}")
+
+        # Supprimer une facture
+        if 'id_supprimer' in request.POST:
+            invoice_id = request.POST.get('id_supprimer')
+
+            try:
+                obj = Invoice.objects.get(pk=invoice_id)
+                obj.delete()
+                messages.success(request, _("The deletion was successful."))
+            except Invoice.DoesNotExist:
+                messages.error(request, _("Invoice not found."))
+            except Exception as e:
+                messages.error(request, f"An error occurred: {e}")
+
+        invoices = Invoice.objects.select_related('customer', 'save_by').all().order_by('-invoice_date_time')
+        items = pagination(request, invoices)
+
+        context = {
+            'invoices': items
+        }
+
+        return render(request, self.template_name, context)
+
+class IndexClientView(View):
+    template_name = 'client.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
 
 @superuser_required
 def get_invoice_pdf(request, *args, **kwargs):

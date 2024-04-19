@@ -1,0 +1,150 @@
+{% load static %}
+
+
+
+    <title>CAGESCOF Consulting - Accueil</title>
+    <style>
+        /* Reset de styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Styles généraux */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #1a233a;
+            color: #fff;
+            padding: 1rem;
+        }
+
+        nav ul {
+            list-style: none;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 1rem;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        main {
+            padding: 2rem;
+        }
+
+        .hero {
+            background-color: #f4f4f4;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #1a233a;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .services {
+            margin-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .service {
+            width: calc(33.33% - 1rem);
+            margin-bottom: 2rem;
+            padding: 1rem;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .service img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .service-description {
+            margin-top: 1rem;
+        }
+
+        footer {
+            background-color: #1a233a;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>  <strong>CAGESCOF Consulting </strong> / CUSTOMER SYSTEM</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Accueil</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">À propos</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h2>Services de conseil comptable et fiscal</h2>
+            <p>Bienvenue chez CAGESCOF Consulting. Nous offrons des services de conseil comptable et fiscal pour répondre à vos besoins.</p>
+            <a href="#" class="btn">En savoir plus</a>
+        </section>
+
+        <section class="services">
+            <div class="service">
+                <img src="{% static 'images/Comptabilité.png' %}" alt="Comptabilité">
+                <div class="service-description">
+                    <h3>Comptabilité</h3>
+                    <p>Nous offrons des services de comptabilité pour vous aider à gérer vos finances efficacement.</p>
+                    <a href="#" class="btn">Visiter</a>
+                </div>
+            </div>
+
+            <div class="service">
+                <img src="{% static 'images/Fiscalité.png' %}" alt="Fiscalité">
+                <div class="service-description">
+                    <h3>Fiscalité</h3>
+                    <p>Nous fournissons des conseils fiscaux pour optimiser vos obligations fiscales.</p>
+                    <a href="#" class="btn">Visiter</a>
+                </div>
+            </div>
+
+
+            <div class="service">
+                <img src="{% static 'images/Planification fiscale.png' %}" alt="Planification fiscale">
+                <div class="service-description">
+                    <h3>Planification fiscale</h3>
+                    <p>Nous élaborons des stratégies fiscales pour minimiser vos impôts et maximiser votre épargne.</p>
+                    <a href="#" class="btn">Visiter</a>
+                </div>
+            </div>
+
+
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 CAGESCOF Consulting. Tous droits réservés.</p>
+    </footer>
+</body>
+

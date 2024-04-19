@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br><br><br><br>
+
+<h1 class="text-capitalize text-center mx-10 bg-dark text-white"> Add a new document </h1>
+
+<form method="post" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label for="customer"> Customer </label>
+            <select name="customer" class="form-control" id="customer">
+                <option> Choose the customer ... </option>
+                {% for customer in customers %}
+                <option value="{{customer.id}}">{{forloop.counter}}-{{customer.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label for="document_type"> Document Type </label>
+            <select name="document_type" class="form-control" id="document_type">
+                <option> Choose the document type ... </option>
+                <option value="C">Contract</option>
+                <option value="D">Devis</option>
+                <option value="A">Avis D'imposition</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label for="file"> Upload File </label>
+            <input required type="file" name="file" class="form-control-file" id="file">
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <label for="comment"> Comments </label>
+            <textarea class="form-control" name="comment" id="comment" cols="30" rows="1"></textarea>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary"> Save </button>
+
+</form>
+
+<br><br><br><br>
+
+{% endblock content %}

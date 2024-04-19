@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<br><br>
+
+<div class="row">
+    <a href="{% url 'add-invoice' %}" class="btn col-md-4 btn-primary">
+        {% trans 'Register a new invoice' %} <span class="badge text-bg-secondary"></span>
+    </a>
+
+    <a href="{% url 'add-customer' %}" class="btn col-md-4 btn-primary">
+        {% trans 'Register a new customer' %} <span class="badge text-bg-secondary"></span>
+    </a>
+
+    <a href="{% url 'add-document' %}" class="btn col-md-4 btn-primary">
+        {% trans 'Register a new document' %} <span class="badge text-bg-secondary"></span>
+    </a>
+</div>
+
+<br> <br>
+
+<div class="form-group">
+    <input id="search" class="form-control" type="text" placeholder="Search....">
+</div>
+
+<div>
+    <table class="table table-striped-columns">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">{% trans 'CUSTOMERS NAME' %}</th>
+                <th scope="col">{% trans 'DATE' %}</th>
+                <th scope="col">{% trans 'DOCUMENT TYPE' %}</th>
+                <th scope="col">{% trans 'ACTIONS' %}</th>
+            </tr>
+        </thead>
+        <tbody id="myTable">
+            {% if documents %}
+            {% for document in documents %}
+            <tr>
+                <th scope="row">{{ document.pk }}</th>
+                <td>{{ document.customer.name }}</td>
+                <td>{{ document.creation_date }}</td>
+                <td>{{ document.get_document_type_display }}</td>
+                <td>
+                    <a href="{% url 'view-document' pk=document.pk %}" title="{% trans 'Detail' %}" class="badge text-white bg-success">{% trans 'View' %}</a>
+
+                    <button id="btn-document-sup" type="button" data-toggle="modal" data-target="#supprimer" class="badge text-white bg-danger" title="{% trans 'Supprimer' %}" data-id="{{ document.pk }}" data-customer="{{ document.customer.name }}">{% trans 'Delete' %}</button>
+
+                    <button id="btn-document-mod" type="button" data-toggle="modal" title="{% trans 'Modifier' %}" data-target="#modifier" data-id="{{ document.pk }}" data-customer="{{ document.customer.name }}" class="badge text-dark bg-warning"> {% trans 'Modify' %}</button>
+                </td>
+            </tr>
+            {% endfor %}
+
+            {% if documents.has_other_pages %}
+            <!-- Pagination -->
+            {% endif %}
+
+            {% else %}
+            <p class="text-center text-white">{% trans 'No document found.' %}</p>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal modifier -->
+<div class="modal fade" id="modifier" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- Ajoutez le contenu de votre modal ici -->
+</div>
+<!-- end modal-->
+
+<!-- Modal suppression -->
+<div class="modal fade" id="supprimer" tabindex="-1" role="dialog" aria-labelledby="sexampleModalLabel" aria-hidden="true">
+    <!-- Ajoutez le contenu de votre modal ici -->
+</div>
+<!-- end modal-->
+
+<br><br>
+
+<script type="text/javascript">
+    // Ajoutez vos scripts JavaScript ici
+</script>
+
+{% endblock %}

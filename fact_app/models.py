@@ -111,4 +111,37 @@ class Article(models.Model):
         return total 
         
 
+class Document(models.Model):
+    """
+    Name: Document model definition
+    Description: Represents documents associated with a customer
+    """
+
+    DOCUMENT_TYPES = (
+        ('C', _('Contract')),
+        ('D', _('Devis')),
+        ('A', _('Avis dimposition')),
+    )
+
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+
+    save_by = models.ForeignKey(User, on_delete=models.PROTECT)
+
+    document_type = models.CharField(max_length=1, choices=DOCUMENT_TYPES)
+
+    creation_date = models.DateTimeField(auto_now_add=True)
+
+    last_updated_date = models.DateTimeField(null=True, blank=True)
+
+    file = models.FileField(upload_to='documents/')
+
+    comments = models.TextField(null=True, max_length=1000, blank=True)
+
+    class Meta:
+        verbose_name = "Document"
+        verbose_name_plural = "Documents"
+
+    def __str__(self):
+        return f"{self.customer.name}_{self.get_document_type_display()}_{self.creation_date.strftime('%Y-%m-%d')}"
+
 
